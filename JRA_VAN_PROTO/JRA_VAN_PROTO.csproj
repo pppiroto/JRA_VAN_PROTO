@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="AxInterop.JVDTLabLib">
+      <HintPath>..\lib\AxInterop.JVDTLabLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Interop.JVDTLabLib">
+      <HintPath>..\lib\Interop.JVDTLabLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

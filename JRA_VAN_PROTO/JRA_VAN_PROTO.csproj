@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="AxInterop.JVDTLabLib">
       <HintPath>..\lib\AxInterop.JVDTLabLib.dll</HintPath>
       <Private>true</Private>

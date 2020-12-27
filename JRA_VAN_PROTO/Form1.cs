@@ -19,6 +19,8 @@ namespace JRA_VAN_PROTO
 
         public Form1()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             resources = new System.Resources.ResourceManager(this.GetType());
             jVLink.Location = new System.Drawing.Point(0, 0);
             jVLink.Name = "jVLink"; 
@@ -51,7 +53,7 @@ namespace JRA_VAN_PROTO
             }
         }
 
-        private void btnThisWeek_Click(object sender, EventArgs e)
+        private void btnGetData_Click(object sender, EventArgs e)
         {
             // データ読み出し処理の一般的な流れ
 
@@ -71,13 +73,13 @@ namespace JRA_VAN_PROTO
                 }
 
 
-                // ②JVDataﾉｵｰﾌﾟﾝ(JVOpen) 
+                // ②JVDataのオープン(JVOpen) 
                 // 要求に応じたデータを読み出せるように準備します。
                 // 必要であればサーバーからデータをダウンロードする処理を起動します。
                 // JVOpenからの戻りとしてダウンロードを行なう予定ファイル数が返されます。 
 
                 string dataSpec = "RACE";               // データ種別に「レース情報」を設定
-                string fromTime = "20201201000000";    // Fromタイムに2020年12月1日を設定
+                string fromTime = "20201101000000";    // Fromタイムに2020年11月1日を設定
                 int optionFlag = 2;                     // オプションに「今週データ」を設定
                 returnCode = this.jVLink.JVOpen(dataSpec, fromTime, optionFlag, ref readCount, ref downloadCount, out string lastFileTimestamp);
                 if (returnCode < 0)
@@ -92,25 +94,24 @@ namespace JRA_VAN_PROTO
                     return;
                 }
 
-                // ③ﾀﾞｳﾝﾛｰﾄﾞ中ﾉﾌﾟﾛｸﾞﾚｽﾊﾞｰ表示(JVStatus)
+                // ③ダウンロード中のプログレスバー表示(JVStatus)
                 // JVOpenはダウンロードスレッドを起動するとダウンロード完了前に呼び出し側に制御を返しますので、
                 // 呼び出し側はJVStatusを使ってダウンロード処理の進行状況を監視する必要があります。
                 // JVStatusはダウンロード済みのファイル数を返しますので、JVOpen時のダウンロード予定ファイル数と一致した場合にダウンロード処理の完了とします。 
 
-                // TODO
+                int count = 0;
+                while((count = this.jVLink.JVStatus()) < downloadCount)
+                {
+                    Debug.WriteLine($"count;{count} <= download count;{downloadCount}");
 
+                    System.Threading.Thread.Sleep(10000);
+                }
 
-
-
-
-
-
-
-                // ④JVDataﾉ読ﾐ出ｼ(JVRead)
+                // ④JVDataの読み出し(JVRead)
                 // データを読み出します。ダウンロードスレッドがダウンロード実行中にJVReadを呼び出すとエラーとなります。
 
                 string recordSpec = null;
-                JVData_Struct.JV_RA_RACE race = new JVData_Struct.JV_RA_RACE();
+                JVData_Struct.JV_SE_RACE_UMA uma = new JVData_Struct.JV_SE_RACE_UMA();
                 string buff = null;
                 int buffSize = 1500;
                 string fName = null;
@@ -123,14 +124,16 @@ namespace JRA_VAN_PROTO
 
                         if (returnCode > 0)
                         {
-                            recordSpec = buff.Substring(1, 2);
-                            if (recordSpec == "RA")
+                            recordSpec = buff.Substring(0, 2);
+                            if (recordSpec == "SE")
                             {
-                                race.SetDataB(ref buff);
+                                uma.SetDataB(ref buff);
+                                Debug.WriteLine($"開催年月日:{uma.id.Year}{uma.id.MonthDay} 競馬場:{uma.id.JyoCD} 開催回:{uma.id.Kaiji} 開催日目:{uma.id.Nichiji} R:{uma.id.RaceNum} 枠:{uma.Wakuban} 馬番:{uma.Umaban} 馬名:{uma.Bamei}");
                             }
                             else
                             {
-                                Debug.WriteLine($"{race.id.Year}{race.id.MonthDay} {race.id.JyoCD} {race.id.Kaiji} {race.id.Nichiji} {race.id.RaceNum} {race.RaceInfo.Hondai}");
+                                //Debug.WriteLine($"SKIP:{recordSpec}");
+
                             }
                         }
                         else if (returnCode == -1)
@@ -145,10 +148,8 @@ namespace JRA_VAN_PROTO
                     }
                 }
 
-
-                // ⑤ﾃﾞｰﾀ内容ｦﾃｷｽﾄﾎﾞｯｸｽﾆ表示
+                // ⑤データ内容をテキストボックスに表示
                 // 一般の競馬ソフトではこの処理の代わりにデータベースへデータを反映する処理が行なわれます。
-
             } 
             finally
             {

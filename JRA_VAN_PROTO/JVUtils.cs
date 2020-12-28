@@ -1,12 +1,38 @@
-﻿using System;
+﻿using JRA_VAN_PROTO.Handler;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace JRA_VAN_PROTO
 {
-    public class JVService
+    public class JVUtils
     {
-     
+
+        /// <summary>
+        /// データを処理するハンドラを指定
+        /// </summary>
+        /// <returns></returns>
+        public static List<Parameter> GetHandlers()
+        {
+            return new List<Parameter> {
+                new Parameter(){TypeName="hander", Code="1", Name="ファイル", Explain="", Tag="" },
+                new Parameter(){TypeName="hander", Code="2", Name="払戻ファイル", Explain="", Tag="" },
+            };
+        }
+
+        public static RecordHandler GetHandler(int index)
+        {
+            switch(GetHandlers()[index].CodeAsInt)
+            {
+                case 1:
+                    return new FileWriteHander();
+                case 2:
+                    return new HRFileWriteHandler();
+            }
+            throw new ArgumentException();
+        }
 
         /// <summary>
         /// JVOpenで指定可能なオプションを取得する
@@ -26,7 +52,7 @@ namespace JRA_VAN_PROTO
         /// データ種別
         /// </summary>
         /// <returns></returns>
-        public static List<Parameter> GetDataSpec()
+        public static List<Parameter> GetDataSpecs()
         {
             return new List<Parameter> {
                 new Parameter(){TypeName="dataSpec", LabelType=2, Category="蓄積系", Code="TOKU", Name="特別登録馬情報", Explain="", Tag="" },
@@ -63,9 +89,128 @@ namespace JRA_VAN_PROTO
             };
         }
 
+        public static string SuppressZero(string field)
+        {
+            if (field != null)
+            {
+                bool isStart = false;
+                int pos = 0;
+                char[] buf = new char[field.Length];
+                foreach(char c in field.ToCharArray())
+                {
+                    if (isStart || c != '0')
+                    {
+                        isStart = true;
+                    }
+                    if (isStart)
+                    {
+                        buf[pos++] = c;
+                    }
+                }
+                string result = new string(buf, 0, pos);
+                if (string.IsNullOrEmpty(result))
+                {
+                    result = "0";
+                }
+                return result;
+
+            }
+            return field;
+        }
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FileWriteHander : RecordHandler
+    {
+        private string _path;
+        public string Path {
+            get
+            {
+                if (this._path == null)
+                {
+                    this._path = this.Parameter;
+                }
+                return this._path;
+            }
+            set
+            {
+                this._path = value;
+            }
+        }
+
+        private StreamWriter writer;
+
+        public override RecordHandler Open()
+        {
+            base.Open();
+            this.writer = new StreamWriter(Path);
+            return this;
+        }
+
+        public override void Read(string recordSpec, string record)
+        {
+            string[] separated = record.Split("\r\n");
+            string line = Format(recordSpec, $"{separated[0]}");
+            if (line != null)
+            {
+                Debug.WriteLine($"{line}");
+                Write(line);
+            }
+        }
+
+        public virtual void Write(string line)
+        {
+            this.writer.Write($"{line}\r\n");
+        }
+
+        public virtual string Format(string recordSpec, string record)
+        {
+            return record;
+        }
+
+        public override void Dispose()
+        {
+            if (this.writer != null)
+            {
+                this.writer.Close();
+            }
+            base.Dispose();
+        }
     }
 
 
+    public abstract class RecordHandler : IDisposable
+    {
+        public string Parameter { get; set; }
+
+        public virtual string GetDataSpec(string dataSpec)
+        {
+            return dataSpec;
+        }
+
+        public virtual RecordHandler Open()
+        {
+            return this;
+        }
+
+        public virtual void WriteTitle()
+        {
+        }
+
+        public abstract void Read(string recordSpec, string record);
+
+        public virtual void Dispose()
+        {
+        }
+    }
+
+
+    /// <summary>
+    /// パラメータ汎用
+    /// </summary>
     public class Parameter
     {
         public string TypeName {get; set;}

@@ -34,15 +34,12 @@ namespace JRA_VAN_PROTO
 
         private void LoadInitialData()
         {
-            this.cmbOption.DataSource = JVService.GetJVOpenOptions();
-            this.cmbDataSpec.DataSource = JVService.GetDataSpec();
+            this.cmbOption.DataSource = JVUtils.GetJVOpenOptions();
+            this.cmbDataSpec.DataSource = JVUtils.GetDataSpecs();
+            this.cmbHandler.DataSource = JVUtils.GetHandlers();
+            this.txtFromtime.Text = "20200101000000";
+            this.txtParam.Text = @"c:\work\jravan\out.txt";
         }
-
-
-
-
-
-
 
 
         private void btnSettings_Click(object sender, EventArgs e)
@@ -67,10 +64,14 @@ namespace JRA_VAN_PROTO
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGetData_Click(object sender, EventArgs e)
         {
             // データ読み出し処理の一般的な流れ
-
             int returnCode = 0;
             int readCount = 0;
             int downloadCount = 0;
@@ -86,15 +87,19 @@ namespace JRA_VAN_PROTO
                     return;
                 }
 
+                RecordHandler handler = JVUtils.GetHandler(this.cmbHandler.SelectedIndex);
+                handler.Parameter = this.txtParam.Text;
+
 
                 // ②JVDataのオープン(JVOpen) 
                 // 要求に応じたデータを読み出せるように準備します。
                 // 必要であればサーバーからデータをダウンロードする処理を起動します。
                 // JVOpenからの戻りとしてダウンロードを行なう予定ファイル数が返されます。 
 
-                string dataSpec = ((Parameter)this.cmbDataSpec.SelectedItem).Code;
+                string dataSpec = handler.GetDataSpec(((Parameter)this.cmbDataSpec.SelectedItem).Code);
                 int optionFlag = ((Parameter)this.cmbOption.SelectedItem).CodeAsInt;
-                string fromTime = "20201101000000";    // Fromタイムに2020年11月1日を設定
+                string fromTime = this.txtFromtime.Text;    
+
                 returnCode = this.jVLink.JVOpen(dataSpec, fromTime, optionFlag, ref readCount, ref downloadCount, out string lastFileTimestamp);
                 if (returnCode < 0)
                 {
@@ -125,7 +130,6 @@ namespace JRA_VAN_PROTO
                 // データを読み出します。ダウンロードスレッドがダウンロード実行中にJVReadを呼び出すとエラーとなります。
 
                 string recordSpec = null;
-                JVData_Struct.JV_SE_RACE_UMA uma = new JVData_Struct.JV_SE_RACE_UMA();
                 string buff = null;
                 int buffSize = 1500;
                 string fName = null;
@@ -133,30 +137,26 @@ namespace JRA_VAN_PROTO
                 buff = new string('\0', buffSize);
                 if (readCount > 0)
                 {
-                    while ((returnCode = this.jVLink.JVRead(out buff, out buffSize, out fName)) != 0)
+                    using(handler.Open())
                     {
-
-                        if (returnCode > 0)
+                        handler.WriteTitle();
+                        while ((returnCode = this.jVLink.JVRead(out buff, out buffSize, out fName)) != 0)
                         {
-                            recordSpec = buff.Substring(0, 2);
-                            if (recordSpec == "SE")
+
+                            if (returnCode > 0)
                             {
-                                uma.SetDataB(ref buff);
-                                Debug.WriteLine($"開催年月日:{uma.id.Year}{uma.id.MonthDay} 競馬場:{uma.id.JyoCD} 開催回:{uma.id.Kaiji} 開催日目:{uma.id.Nichiji} R:{uma.id.RaceNum} 枠:{uma.Wakuban} 馬番:{uma.Umaban} 馬名:{uma.Bamei}");
+                                recordSpec = buff.Substring(0, 2);
+                                handler.Read(recordSpec, buff);
+                            }
+                            else if (returnCode == -1)
+                            {
+
                             }
                             else
                             {
-                                Debug.WriteLine($"SKIP:{recordSpec}");
+                                MessageBox.Show($"読み込みエラー。 RC={returnCode}");
+                                return;
                             }
-                        }
-                        else if (returnCode == -1)
-                        {
-
-                        }
-                        else
-                        {
-                            MessageBox.Show($"読み込みエラー。 RC={returnCode}");
-                            return;
                         }
                     }
                 }
@@ -168,11 +168,8 @@ namespace JRA_VAN_PROTO
             {
                 // ⑥JVDataﾉｸﾛｰｽﾞ(JVClose) 
                 // JVOpenで確保されたリソースを開放します。
-                if (downloadCount > 0)
-                {
-
-                }
                 returnCode = this.jVLink.JVClose();
+                Debug.WriteLine("FINISH.");
             }
 
         }

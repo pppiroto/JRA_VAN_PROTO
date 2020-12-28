@@ -1215,7 +1215,7 @@ namespace JRA_VAN_PROTO
                     PaySanrentan[i].SetDataB(MidB2B(ref bBuff, 604 + (19 * i), 19));
                 }
 
-                crlf = MidB2S(ref bBuff, 718, 2);
+                // crlf = MidB2S(ref bBuff, 718, 2);
                 bBuff = null;
             }
         }

@@ -33,6 +33,14 @@ namespace JRA_VAN_PROTO
             this.btnGetData = new System.Windows.Forms.Button();
             this.cmbDataSpec = new System.Windows.Forms.ComboBox();
             this.cmbOption = new System.Windows.Forms.ComboBox();
+            this.lblOption = new System.Windows.Forms.Label();
+            this.ldbDataSpec = new System.Windows.Forms.Label();
+            this.txtFromtime = new System.Windows.Forms.TextBox();
+            this.lblFromtime = new System.Windows.Forms.Label();
+            this.cmbHandler = new System.Windows.Forms.ComboBox();
+            this.lblHander = new System.Windows.Forms.Label();
+            this.txtParam = new System.Windows.Forms.TextBox();
+            this.lblParam = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSettings
@@ -58,7 +66,7 @@ namespace JRA_VAN_PROTO
             // cmbDataSpec
             // 
             this.cmbDataSpec.FormattingEnabled = true;
-            this.cmbDataSpec.Location = new System.Drawing.Point(100, 75);
+            this.cmbDataSpec.Location = new System.Drawing.Point(100, 74);
             this.cmbDataSpec.Name = "cmbDataSpec";
             this.cmbDataSpec.Size = new System.Drawing.Size(333, 23);
             this.cmbDataSpec.TabIndex = 2;
@@ -66,16 +74,91 @@ namespace JRA_VAN_PROTO
             // cmbOption
             // 
             this.cmbOption.FormattingEnabled = true;
-            this.cmbOption.Location = new System.Drawing.Point(100, 46);
+            this.cmbOption.Location = new System.Drawing.Point(100, 45);
             this.cmbOption.Name = "cmbOption";
             this.cmbOption.Size = new System.Drawing.Size(333, 23);
             this.cmbOption.TabIndex = 3;
+            // 
+            // lblOption
+            // 
+            this.lblOption.AutoSize = true;
+            this.lblOption.Location = new System.Drawing.Point(13, 53);
+            this.lblOption.Name = "lblOption";
+            this.lblOption.Size = new System.Drawing.Size(44, 15);
+            this.lblOption.TabIndex = 4;
+            this.lblOption.Text = "Option";
+            // 
+            // ldbDataSpec
+            // 
+            this.ldbDataSpec.AutoSize = true;
+            this.ldbDataSpec.Location = new System.Drawing.Point(13, 83);
+            this.ldbDataSpec.Name = "ldbDataSpec";
+            this.ldbDataSpec.Size = new System.Drawing.Size(57, 15);
+            this.ldbDataSpec.TabIndex = 5;
+            this.ldbDataSpec.Text = "データ種別";
+            // 
+            // txtFromtime
+            // 
+            this.txtFromtime.Location = new System.Drawing.Point(100, 133);
+            this.txtFromtime.Name = "txtFromtime";
+            this.txtFromtime.Size = new System.Drawing.Size(123, 23);
+            this.txtFromtime.TabIndex = 6;
+            // 
+            // lblFromtime
+            // 
+            this.lblFromtime.AutoSize = true;
+            this.lblFromtime.Location = new System.Drawing.Point(12, 141);
+            this.lblFromtime.Name = "lblFromtime";
+            this.lblFromtime.Size = new System.Drawing.Size(67, 15);
+            this.lblFromtime.TabIndex = 7;
+            this.lblFromtime.Text = "開始ポイント";
+            // 
+            // cmbHandler
+            // 
+            this.cmbHandler.FormattingEnabled = true;
+            this.cmbHandler.Location = new System.Drawing.Point(100, 104);
+            this.cmbHandler.Name = "cmbHandler";
+            this.cmbHandler.Size = new System.Drawing.Size(333, 23);
+            this.cmbHandler.TabIndex = 8;
+            // 
+            // lblHander
+            // 
+            this.lblHander.AutoSize = true;
+            this.lblHander.Location = new System.Drawing.Point(13, 112);
+            this.lblHander.Name = "lblHander";
+            this.lblHander.Size = new System.Drawing.Size(54, 15);
+            this.lblHander.TabIndex = 9;
+            this.lblHander.Text = "設定済み";
+            // 
+            // txtParam
+            // 
+            this.txtParam.Location = new System.Drawing.Point(100, 163);
+            this.txtParam.Name = "txtParam";
+            this.txtParam.Size = new System.Drawing.Size(333, 23);
+            this.txtParam.TabIndex = 10;
+            // 
+            // lblParam
+            // 
+            this.lblParam.AutoSize = true;
+            this.lblParam.Location = new System.Drawing.Point(13, 171);
+            this.lblParam.Name = "lblParam";
+            this.lblParam.Size = new System.Drawing.Size(50, 15);
+            this.lblParam.TabIndex = 11;
+            this.lblParam.Text = "パラメータ";
             // 
             // frmDataGet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblParam);
+            this.Controls.Add(this.txtParam);
+            this.Controls.Add(this.lblHander);
+            this.Controls.Add(this.cmbHandler);
+            this.Controls.Add(this.lblFromtime);
+            this.Controls.Add(this.txtFromtime);
+            this.Controls.Add(this.ldbDataSpec);
+            this.Controls.Add(this.lblOption);
             this.Controls.Add(this.cmbOption);
             this.Controls.Add(this.cmbDataSpec);
             this.Controls.Add(this.btnGetData);
@@ -84,6 +167,7 @@ namespace JRA_VAN_PROTO
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -93,6 +177,14 @@ namespace JRA_VAN_PROTO
         private System.Windows.Forms.Button btnGetData;
         private System.Windows.Forms.ComboBox cmbDataSpec;
         private System.Windows.Forms.ComboBox cmbOption;
+        private System.Windows.Forms.Label lblOption;
+        private System.Windows.Forms.Label ldbDataSpec;
+        private System.Windows.Forms.TextBox txtFromtime;
+        private System.Windows.Forms.Label lblFromtime;
+        private System.Windows.Forms.ComboBox cmbHandler;
+        private System.Windows.Forms.Label lblHander;
+        private System.Windows.Forms.TextBox txtParam;
+        private System.Windows.Forms.Label lblParam;
     }
 }
 

@@ -29,7 +29,21 @@ namespace JRA_VAN_PROTO
             this.Controls.Add(jVLink);
 
             InitializeComponent();
+            LoadInitialData();
         }
+
+        private void LoadInitialData()
+        {
+            this.cmbOption.DataSource = JVService.GetJVOpenOptions();
+            this.cmbDataSpec.DataSource = JVService.GetDataSpec();
+        }
+
+
+
+
+
+
+
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
@@ -78,9 +92,9 @@ namespace JRA_VAN_PROTO
                 // 必要であればサーバーからデータをダウンロードする処理を起動します。
                 // JVOpenからの戻りとしてダウンロードを行なう予定ファイル数が返されます。 
 
-                string dataSpec = "RACE";               // データ種別に「レース情報」を設定
+                string dataSpec = ((Parameter)this.cmbDataSpec.SelectedItem).Code;
+                int optionFlag = ((Parameter)this.cmbOption.SelectedItem).CodeAsInt;
                 string fromTime = "20201101000000";    // Fromタイムに2020年11月1日を設定
-                int optionFlag = 2;                     // オプションに「今週データ」を設定
                 returnCode = this.jVLink.JVOpen(dataSpec, fromTime, optionFlag, ref readCount, ref downloadCount, out string lastFileTimestamp);
                 if (returnCode < 0)
                 {
@@ -132,8 +146,7 @@ namespace JRA_VAN_PROTO
                             }
                             else
                             {
-                                //Debug.WriteLine($"SKIP:{recordSpec}");
-
+                                Debug.WriteLine($"SKIP:{recordSpec}");
                             }
                         }
                         else if (returnCode == -1)

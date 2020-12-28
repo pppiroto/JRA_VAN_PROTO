@@ -1,7 +1,7 @@
 ﻿
 namespace JRA_VAN_PROTO
 {
-    partial class Form1
+    partial class frmDataGet
     {
         /// <summary>
         ///  Required designer variable.

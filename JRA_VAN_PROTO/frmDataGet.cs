@@ -12,12 +12,12 @@ using AxJVDTLabLib;
 
 namespace JRA_VAN_PROTO
 {
-    public partial class Form1 : Form
+    public partial class frmDataGet : Form
     {
         private AxJVLink jVLink = new AxJVDTLabLib.AxJVLink();
         private System.Resources.ResourceManager resources;
 
-        public Form1()
+        public frmDataGet()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 

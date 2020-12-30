@@ -40,7 +40,7 @@ namespace JRA_VAN_PROTO
         /// <param name="myByte">文字列</param>
         /// <param name="bSt">開始位置</param>
         /// <param name="bLen">バイト長</param>
-        /// <returns>文字列</returns>
+        /// <returns>文字列</returns>l
         public static byte[] MidB2B(ref byte[] myByte, int bSt, int bLen)
         {
             byte[] cBt = new byte[bLen];
@@ -62,10 +62,25 @@ namespace JRA_VAN_PROTO
         /// </summary>
         /// <param name="myString">文字列</param>
         /// <returns>バイト配列</returns>
-        public static byte[] Str2Byte(ref string myString)
+        public static byte[] Str2Byte(int size, ref string myString)
         {
+            byte[] bBuff = new byte[size];
+
             // Shift JISに変換する
-            return Encoding.GetEncoding("Shift_JIS").GetBytes(myString);
+            byte[] src = Encoding.GetEncoding("Shift_JIS").GetBytes(myString);
+
+            int len = src.Length;
+            if (size < len)
+            {
+                len = size;
+            }
+            Array.Copy(src, bBuff, len);
+
+            for (int i = len; i < size; i++)
+            {
+                bBuff[i] = 0x20; 
+            }
+            return bBuff;
         }
 
         #endregion
@@ -633,8 +648,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[21657];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[21657];
+                byte[] bBuff = Str2Byte(21657, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -652,7 +667,7 @@ namespace JRA_VAN_PROTO
                     TokuUmaInfo[i].SetDataB(MidB2B(ref bBuff, 656 + (70 * i), 70));
                 }
 
-                crlf = MidB2S(ref bBuff, 21656, 2);
+                // crlf = MidB2S(ref bBuff, 21656, 2);
                 bBuff = null;
             }
         }
@@ -741,8 +756,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[1272];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[1272];
+                byte[] bBuff = Str2Byte(1272, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -799,7 +814,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 RecordUpKubun = MidB2S(ref bBuff, 1270, 1);
-                crlf = MidB2S(ref bBuff, 1271, 2);
+                // crlf = MidB2S(ref bBuff, 1271, 2);
                 bBuff = null;
             }
         }
@@ -936,8 +951,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[555];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[555];
+                byte[] bBuff = Str2Byte(555, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1005,7 +1020,7 @@ namespace JRA_VAN_PROTO
                 DMGosaM = MidB2S(ref bBuff, 547, 4);
                 DMJyuni = MidB2S(ref bBuff, 551, 2);
                 KyakusituKubun = MidB2S(ref bBuff, 553, 1);
-                crlf = MidB2S(ref bBuff, 554, 2);
+                // crlf = MidB2S(ref bBuff, 554, 2);
                 bBuff = null;
             }
         }
@@ -1146,8 +1161,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[719];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[719];
+                byte[] bBuff = Str2Byte(719, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1346,8 +1361,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[28955];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[28955];
+                byte[] bBuff = Str2Byte(28955, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1406,7 +1421,7 @@ namespace JRA_VAN_PROTO
                     HyoTotal[i] = MidB2S(ref bBuff, 28800 + (11 * i), 11);
                 }
 
-                crlf = MidB2S(ref bBuff, 28954, 2);
+                // crlf = MidB2S(ref bBuff, 28954, 2);
                 bBuff = null;
             }
         }
@@ -1438,8 +1453,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[102900];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[102900];
+                byte[] bBuff = Str2Byte(102900, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1460,7 +1475,7 @@ namespace JRA_VAN_PROTO
                     HyoTotal[i] = MidB2S(ref bBuff, 102867 + (11 * i), 11);
                 }
 
-                crlf = MidB2S(ref bBuff, 102889, 2);
+                // crlf = MidB2S(ref bBuff, 102889, 2);
                 bBuff = null;
             }
         }
@@ -1564,8 +1579,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[962];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[962];
+                byte[] bBuff = Str2Byte(962, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1593,7 +1608,7 @@ namespace JRA_VAN_PROTO
                 TotalHyosuTansyo = MidB2S(ref bBuff, 928, 11);
                 TotalHyosuFukusyo = MidB2S(ref bBuff, 939, 11);
                 TotalHyosuWakuren = MidB2S(ref bBuff, 950, 11);
-                crlf = MidB2S(ref bBuff, 961, 2);
+                // crlf = MidB2S(ref bBuff, 961, 2);
                 bBuff = null;
             }
         }
@@ -1645,8 +1660,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[2042];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[2042];
+                byte[] bBuff = Str2Byte(2042, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1661,7 +1676,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 TotalHyosuUmaren = MidB2S(ref bBuff, 2030, 11);
-                crlf = MidB2S(ref bBuff, 2041, 2);
+                // crlf = MidB2S(ref bBuff, 2041, 2);
                 bBuff = null;
             }
         }
@@ -1716,8 +1731,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[2654];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[2654];
+                byte[] bBuff = Str2Byte(2654, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1732,7 +1747,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 TotalHyosuWide = MidB2S(ref bBuff, 2642, 11);
-                crlf = MidB2S(ref bBuff, 2653, 2);
+                // crlf = MidB2S(ref bBuff, 2653, 2);
                 bBuff = null;
             }
         }
@@ -1785,8 +1800,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[4031];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[4031];
+                byte[] bBuff = Str2Byte(4031, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1801,7 +1816,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 TotalHyosuUmatan = MidB2S(ref bBuff, 4019, 11);
-                crlf = MidB2S(ref bBuff, 4030, 2);
+                // crlf = MidB2S(ref bBuff, 4030, 2);
                 bBuff = null;
             }
         }
@@ -1854,8 +1869,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[12293];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[12293];
+                byte[] bBuff = Str2Byte(12293, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1870,7 +1885,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 TotalHyosuSanrenpuku = MidB2S(ref bBuff, 12281, 11);
-                crlf = MidB2S(ref bBuff, 12292, 2);
+                // crlf = MidB2S(ref bBuff, 12292, 2);
                 bBuff = null;
             }
         }
@@ -1923,8 +1938,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[83285];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[83285];
+                byte[] bBuff = Str2Byte(83285, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -1939,7 +1954,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 TotalHyosuSanrentan = MidB2S(ref bBuff, 83273, 11);
-                crlf = MidB2S(ref bBuff, 83284, 2);
+                // crlf = MidB2S(ref bBuff, 83284, 2);
                 bBuff = null;
             }
         }
@@ -2044,8 +2059,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[1577];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[1577];
+                byte[] bBuff = Str2Byte(1577, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KettoNum = MidB2S(ref bBuff, 12, 10);
@@ -2104,7 +2119,7 @@ namespace JRA_VAN_PROTO
                 }
 
                 RaceCount = MidB2S(ref bBuff, 1573, 3);
-                crlf = MidB2S(ref bBuff, 1576, 2);
+                // crlf = MidB2S(ref bBuff, 1576, 2);
                 bBuff = null;
             }
         }
@@ -2212,8 +2227,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[4173];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[4173];
+                byte[] bBuff = Str2Byte(4173, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KisyuCode = MidB2S(ref bBuff, 12, 5);
@@ -2251,7 +2266,7 @@ namespace JRA_VAN_PROTO
                     HonZenRuikei[i].SetDataB(MidB2B(ref bBuff, 1016 + (1052 * i), 1052));
                 }
 
-                crlf = MidB2S(ref bBuff, 4172, 2);
+                // crlf = MidB2S(ref bBuff, 4172, 2);
                 bBuff = null;
             }
         }
@@ -2299,8 +2314,8 @@ namespace JRA_VAN_PROTO
             {
                 Initialize();
                 int i;
-                byte[] bBuff = new byte[3862];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[3862];
+                byte[] bBuff = Str2Byte(3862, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 ChokyosiCode = MidB2S(ref bBuff, 12, 5);
@@ -2325,7 +2340,7 @@ namespace JRA_VAN_PROTO
                     HonZenRuikei[i].SetDataB(MidB2B(ref bBuff, 705 + (1052 * i), 1052));
                 }
 
-                crlf = MidB2S(ref bBuff, 3861, 2);
+                // crlf = MidB2S(ref bBuff, 3861, 2);
                 bBuff = null;
             }
         }
@@ -2360,8 +2375,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[537];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[537];
+                byte[] bBuff = Str2Byte(537, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 BreederCode = MidB2S(ref bBuff, 12, 6);
@@ -2376,7 +2391,7 @@ namespace JRA_VAN_PROTO
                     HonRuikei[i].SetDataB(MidB2B(ref bBuff, 416 + (60 * i), 60));
                 }
 
-                crlf = MidB2S(ref bBuff, 536, 2);
+                // crlf = MidB2S(ref bBuff, 536, 2);
                 bBuff = null;
             }
         }
@@ -2411,8 +2426,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[477];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[477];
+                byte[] bBuff = Str2Byte(477, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 BanusiCode = MidB2S(ref bBuff, 12, 6);
@@ -2427,7 +2442,7 @@ namespace JRA_VAN_PROTO
                     HonRuikei[i].SetDataB(MidB2B(ref bBuff, 356 + (60 * i), 60));
                 }
 
-                crlf = MidB2S(ref bBuff, 476, 2);
+                // crlf = MidB2S(ref bBuff, 476, 2);
                 bBuff = null;
             }
         }
@@ -2468,8 +2483,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[245];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[245];
+                byte[] bBuff = Str2Byte(245, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 HansyokuNum = MidB2S(ref bBuff, 12, 8);
@@ -2488,7 +2503,7 @@ namespace JRA_VAN_PROTO
                 SanchiName = MidB2S(ref bBuff, 208, 20);
                 HansyokuFNum = MidB2S(ref bBuff, 228, 8);
                 HansyokuMNum = MidB2S(ref bBuff, 236, 8);
-                crlf = MidB2S(ref bBuff, 244, 2);
+                // crlf = MidB2S(ref bBuff, 244, 2);
                 bBuff = null;
             }
         }
@@ -2529,8 +2544,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[178];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[178];
+                byte[] bBuff = Str2Byte(178, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KettoNum = MidB2S(ref bBuff, 12, 10);
@@ -2548,7 +2563,7 @@ namespace JRA_VAN_PROTO
                     HansyokuNum[i] = MidB2S(ref bBuff, 65 + (8 * i), 8);
                 }
 
-                crlf = MidB2S(ref bBuff, 177, 2);
+                // crlf = MidB2S(ref bBuff, 177, 2);
                 bBuff = null;
             }
         }
@@ -2630,8 +2645,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[501];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[501];
+                byte[] bBuff = Str2Byte(501, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 RecInfoKubun = MidB2S(ref bBuff, 12, 1);
@@ -2651,7 +2666,7 @@ namespace JRA_VAN_PROTO
                     RecUmaInfo[i].SetDataB(MidB2B(ref bBuff, 110 + (130 * i), 130));
                 }
 
-                crlf = MidB2S(ref bBuff, 500, 2);
+                // crlf = MidB2S(ref bBuff, 500, 2);
                 bBuff = null;
             }
         }
@@ -2681,8 +2696,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[60];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[60];
+                byte[] bBuff = Str2Byte(60, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 TresenKubun = MidB2S(ref bBuff, 12, 1);
@@ -2696,7 +2711,7 @@ namespace JRA_VAN_PROTO
                 HaronTime2 = MidB2S(ref bBuff, 49, 4);
                 LapTime2 = MidB2S(ref bBuff, 53, 3);
                 LapTime1 = MidB2S(ref bBuff, 56, 3);
-                crlf = MidB2S(ref bBuff, 59, 2);
+                // crlf = MidB2S(ref bBuff, 59, 2);
                 bBuff = null;
             }
         }
@@ -2747,8 +2762,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[847];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[847];
+                byte[] bBuff = Str2Byte(847, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -2759,7 +2774,7 @@ namespace JRA_VAN_PROTO
                     BataijyuInfo[i].SetDataB(MidB2B(ref bBuff, 36 + (45 * i), 45));
                 }
 
-                crlf = MidB2S(ref bBuff, 846, 2);
+                // crlf = MidB2S(ref bBuff, 846, 2);
                 bBuff = null;
             }
         }
@@ -2782,8 +2797,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[42];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[42];
+                byte[] bBuff = Str2Byte(42, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 14));
@@ -2791,7 +2806,7 @@ namespace JRA_VAN_PROTO
                 HenkoID = MidB2S(ref bBuff, 34, 1);
                 TenkoBaba.SetDataB(MidB2B(ref bBuff, 35, 3));
                 TenkoBabaBefore.SetDataB(MidB2B(ref bBuff, 38, 3));
-                crlf = MidB2S(ref bBuff, 41, 2);
+                // crlf = MidB2S(ref bBuff, 41, 2);
                 bBuff = null;
             }
         }
@@ -2816,8 +2831,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[78];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[78];
+                byte[] bBuff = Str2Byte(78, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -2825,7 +2840,7 @@ namespace JRA_VAN_PROTO
                 Umaban = MidB2S(ref bBuff, 36, 2);
                 Bamei = MidB2S(ref bBuff, 38, 36);
                 JiyuKubun = MidB2S(ref bBuff, 74, 3);
-                crlf = MidB2S(ref bBuff, 77, 2);
+                // crlf = MidB2S(ref bBuff, 77, 2);
                 bBuff = null;
             }
         }
@@ -2873,8 +2888,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[161];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[161];
+                byte[] bBuff = Str2Byte(161, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -2883,7 +2898,7 @@ namespace JRA_VAN_PROTO
                 Bamei = MidB2S(ref bBuff, 38, 36);
                 JCInfoAfter.SetDataB(MidB2B(ref bBuff, 74, 43));
                 JCInfoBefore.SetDataB(MidB2B(ref bBuff, 117, 43));
-                crlf = MidB2S(ref bBuff, 160, 2);
+                // crlf = MidB2S(ref bBuff, 160, 2);
                 bBuff = null;
             }
         }
@@ -2922,15 +2937,15 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[45];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[45];
+                byte[] bBuff = Str2Byte(45, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
                 HappyoTime.SetDataB(MidB2B(ref bBuff, 28, 8));
                 TCInfoAfter.SetDataB(MidB2B(ref bBuff, 36, 4));
                 TCInfoBefore.SetDataB(MidB2B(ref bBuff, 40, 4));
-                crlf = MidB2S(ref bBuff, 44, 2);
+                // crlf = MidB2S(ref bBuff, 44, 2);
                 bBuff = null;
             }
         }
@@ -2969,8 +2984,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[50];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[50];
+                byte[] bBuff = Str2Byte(50, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -2978,7 +2993,7 @@ namespace JRA_VAN_PROTO
                 CCInfoAfter.SetDataB(MidB2B(ref bBuff, 36, 6));
                 CCInfoBefore.SetDataB(MidB2B(ref bBuff, 42, 6));
                 JiyuCd = MidB2S(ref bBuff, 48, 1);
-                crlf = MidB2S(ref bBuff, 49, 2);
+                // crlf = MidB2S(ref bBuff, 49, 2);
                 bBuff = null;
             }
         }
@@ -3028,8 +3043,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[303];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[303];
+                byte[] bBuff = Str2Byte(303, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -3040,7 +3055,7 @@ namespace JRA_VAN_PROTO
                     DMInfo[i].SetDataB(MidB2B(ref bBuff, 32 + (15 * i), 15));
                 }
 
-                crlf = MidB2S(ref bBuff, 302, 2);
+                // crlf = MidB2S(ref bBuff, 302, 2);
                 bBuff = null;
             }
         }
@@ -3114,8 +3129,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[382];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[382];
+                byte[] bBuff = Str2Byte(382, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 14));
@@ -3126,7 +3141,7 @@ namespace JRA_VAN_PROTO
                     JyusyoInfo[i].SetDataB(MidB2B(ref bBuff, 27 + (118 * i), 118));
                 }
 
-                crlf = MidB2S(ref bBuff, 381, 2);
+                // crlf = MidB2S(ref bBuff, 381, 2);
                 bBuff = null;
             }
         }
@@ -3155,8 +3170,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[196];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[196];
+                byte[] bBuff = Str2Byte(196, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KettoNum = MidB2S(ref bBuff, 12, 10);
@@ -3170,7 +3185,7 @@ namespace JRA_VAN_PROTO
                 ToDate.SetDataB(MidB2B(ref bBuff, 176, 8));
                 Barei = MidB2S(ref bBuff, 184, 1);
                 Price = MidB2S(ref bBuff, 185, 10);
-                crlf = MidB2S(ref bBuff, 195, 2);
+                // crlf = MidB2S(ref bBuff, 195, 2);
                 bBuff = null;
             }
         }
@@ -3191,14 +3206,14 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[123];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[123];
+                byte[] bBuff = Str2Byte(123, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KettoNum = MidB2S(ref bBuff, 12, 10);
                 Bamei = MidB2S(ref bBuff, 22, 36);
                 Origin = MidB2S(ref bBuff, 58, 64);
-                crlf = MidB2S(ref bBuff, 122, 2);
+                // crlf = MidB2S(ref bBuff, 122, 2);
                 bBuff = null;
             }
         }
@@ -3526,8 +3541,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[6864];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[6864];
+                byte[] bBuff = Str2Byte(6864, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -3536,7 +3551,7 @@ namespace JRA_VAN_PROTO
                 ChokyoChaku.SetDataB(MidB2B(ref bBuff, 3864, 2479));
                 BanusiChaku.SetDataB(MidB2B(ref bBuff, 6343, 254));
                 BreederChaku.SetDataB(MidB2B(ref bBuff, 6597, 266));
-                crlf = MidB2S(ref bBuff, 6863, 2);
+                // crlf = MidB2S(ref bBuff, 6863, 2);
                 bBuff = null;
             }
         }
@@ -3559,15 +3574,15 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[6887];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[6887];
+                byte[] bBuff = Str2Byte(6887, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 HansyokuNum = MidB2S(ref bBuff, 12, 8);
                 KeitoId = MidB2S(ref bBuff, 20, 30);
                 KeitoName = MidB2S(ref bBuff, 50, 36);
                 KeitoEx = MidB2S(ref bBuff, 86, 6800);
-                crlf = MidB2S(ref bBuff, 6886, 2);
+                // crlf = MidB2S(ref bBuff, 6886, 2);
                 bBuff = null;
             }
         }
@@ -3592,8 +3607,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[6829];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[6829];
+                byte[] bBuff = Str2Byte(6829, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 JyoCD = MidB2S(ref bBuff, 12, 2);
@@ -3601,7 +3616,7 @@ namespace JRA_VAN_PROTO
                 TrackCD = MidB2S(ref bBuff, 18, 2);
                 KaishuDate.SetDataB(MidB2B(ref bBuff, 20, 8));
                 CourseEx = MidB2S(ref bBuff, 28, 6800);
-                crlf = MidB2S(ref bBuff, 6828, 2);
+                // crlf = MidB2S(ref bBuff, 6828, 2);
                 bBuff = null;
             }
         }
@@ -3646,8 +3661,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[141];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[141];
+                byte[] bBuff = Str2Byte(141, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -3658,7 +3673,7 @@ namespace JRA_VAN_PROTO
                     TMInfo[i].SetDataB(MidB2B(ref bBuff, 32 + (6 * i), 6));
                 }
 
-                crlf = MidB2S(ref bBuff, 140, 2);
+                // crlf = MidB2S(ref bBuff, 140, 2);
                 bBuff = null;
             }
         }
@@ -3751,8 +3766,8 @@ namespace JRA_VAN_PROTO
             public void SetDataB(ref string strBuff)
             {
                 Initialize();
-                byte[] bBuff = new byte[7215];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[7215];
+                byte[] bBuff = Str2Byte(7215, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 KaisaiDate.SetDataB(MidB2B(ref bBuff, 12, 8));
@@ -3782,7 +3797,7 @@ namespace JRA_VAN_PROTO
                     WFPayInfo[i].SetDataB(MidB2B(ref bBuff, 167 + (29 * i), 29));
                 }
 
-                crlf = MidB2S(ref bBuff, 140, 2);
+                // crlf = MidB2S(ref bBuff, 140, 2);
                 bBuff = null;
             }
         }
@@ -3805,8 +3820,8 @@ namespace JRA_VAN_PROTO
             // データセット
             public void SetDataB(ref string strBuff)
             {
-                byte[] bBuff = new byte[80];
-                bBuff = Str2Byte(ref strBuff);
+                // byte[] bBuff = new byte[80];
+                byte[] bBuff = Str2Byte(80, ref strBuff);
 
                 head.SetDataB(MidB2B(ref bBuff, 1, 11));
                 id.SetDataB(MidB2B(ref bBuff, 12, 16));
@@ -3815,7 +3830,7 @@ namespace JRA_VAN_PROTO
                 ShutsubaTohyoJun = MidB2S(ref bBuff, 74, 3);
                 ShussoKubun = MidB2S(ref bBuff, 77, 1);
                 JogaiJotaiKubun = MidB2S(ref bBuff, 78, 1);
-                crlf = MidB2S(ref bBuff, 79, 2);
+                //crlf = MidB2S(ref bBuff, 79, 2);
                 bBuff = null;
             }
         }

@@ -17,8 +17,9 @@ namespace JRA_VAN_PROTO
         public static List<Parameter> GetHandlers()
         {
             return new List<Parameter> {
-                new Parameter(){TypeName="hander", Code="1", Name="ファイル", Explain="", Tag="" },
+                new Parameter(){TypeName="hander", Code="1", Name="ファイル(KEY情報あり)", Explain="", Tag="" },
                 new Parameter(){TypeName="hander", Code="2", Name="払戻ファイル", Explain="", Tag="" },
+                new Parameter(){TypeName="hander", Code="3", Name="ファイル", Explain="", Tag="" },
             };
         }
 
@@ -27,9 +28,11 @@ namespace JRA_VAN_PROTO
             switch(GetHandlers()[index].CodeAsInt)
             {
                 case 1:
-                    return new FileWriteHander();
+                    return new KeyBodyFileWirteHandler();
                 case 2:
                     return new HRFileWriteHandler();
+                case 3:
+                    return new FileWriteHander();
             }
             throw new ArgumentException();
         }
@@ -107,7 +110,7 @@ namespace JRA_VAN_PROTO
                         buf[pos++] = c;
                     }
                 }
-                string result = new string(buf, 0, pos);
+                string result = new string(buf,0,pos);
                 if (string.IsNullOrEmpty(result))
                 {
                     result = "0";
@@ -120,67 +123,7 @@ namespace JRA_VAN_PROTO
 
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class FileWriteHander : RecordHandler
-    {
-        private string _path;
-        public string Path {
-            get
-            {
-                if (this._path == null)
-                {
-                    this._path = this.Parameter;
-                }
-                return this._path;
-            }
-            set
-            {
-                this._path = value;
-            }
-        }
-
-        private StreamWriter writer;
-
-        public override RecordHandler Open()
-        {
-            base.Open();
-            this.writer = new StreamWriter(Path);
-            return this;
-        }
-
-        public override void Read(string recordSpec, string record)
-        {
-            string[] separated = record.Split("\r\n");
-            string line = Format(recordSpec, $"{separated[0]}");
-            if (line != null)
-            {
-                Debug.WriteLine($"{line}");
-                Write(line);
-            }
-        }
-
-        public virtual void Write(string line)
-        {
-            this.writer.Write($"{line}\r\n");
-        }
-
-        public virtual string Format(string recordSpec, string record)
-        {
-            return record;
-        }
-
-        public override void Dispose()
-        {
-            if (this.writer != null)
-            {
-                this.writer.Close();
-            }
-            base.Dispose();
-        }
-    }
-
+ 
 
     public abstract class RecordHandler : IDisposable
     {

@@ -41,11 +41,13 @@ namespace JRA_VAN_PROTO
             this.lblHander = new System.Windows.Forms.Label();
             this.txtParam = new System.Windows.Forms.TextBox();
             this.lblParam = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSettings
             // 
-            this.btnSettings.Location = new System.Drawing.Point(12, 12);
+            this.btnSettings.Location = new System.Drawing.Point(12, 7);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(75, 23);
             this.btnSettings.TabIndex = 0;
@@ -55,7 +57,7 @@ namespace JRA_VAN_PROTO
             // 
             // btnGetData
             // 
-            this.btnGetData.Location = new System.Drawing.Point(12, 221);
+            this.btnGetData.Location = new System.Drawing.Point(346, 165);
             this.btnGetData.Name = "btnGetData";
             this.btnGetData.Size = new System.Drawing.Size(75, 23);
             this.btnGetData.TabIndex = 1;
@@ -66,7 +68,7 @@ namespace JRA_VAN_PROTO
             // cmbDataSpec
             // 
             this.cmbDataSpec.FormattingEnabled = true;
-            this.cmbDataSpec.Location = new System.Drawing.Point(100, 74);
+            this.cmbDataSpec.Location = new System.Drawing.Point(100, 83);
             this.cmbDataSpec.Name = "cmbDataSpec";
             this.cmbDataSpec.Size = new System.Drawing.Size(333, 23);
             this.cmbDataSpec.TabIndex = 2;
@@ -74,7 +76,7 @@ namespace JRA_VAN_PROTO
             // cmbOption
             // 
             this.cmbOption.FormattingEnabled = true;
-            this.cmbOption.Location = new System.Drawing.Point(100, 45);
+            this.cmbOption.Location = new System.Drawing.Point(100, 54);
             this.cmbOption.Name = "cmbOption";
             this.cmbOption.Size = new System.Drawing.Size(333, 23);
             this.cmbOption.TabIndex = 3;
@@ -82,7 +84,7 @@ namespace JRA_VAN_PROTO
             // lblOption
             // 
             this.lblOption.AutoSize = true;
-            this.lblOption.Location = new System.Drawing.Point(13, 53);
+            this.lblOption.Location = new System.Drawing.Point(13, 62);
             this.lblOption.Name = "lblOption";
             this.lblOption.Size = new System.Drawing.Size(44, 15);
             this.lblOption.TabIndex = 4;
@@ -91,7 +93,7 @@ namespace JRA_VAN_PROTO
             // ldbDataSpec
             // 
             this.ldbDataSpec.AutoSize = true;
-            this.ldbDataSpec.Location = new System.Drawing.Point(13, 83);
+            this.ldbDataSpec.Location = new System.Drawing.Point(13, 92);
             this.ldbDataSpec.Name = "ldbDataSpec";
             this.ldbDataSpec.Size = new System.Drawing.Size(57, 15);
             this.ldbDataSpec.TabIndex = 5;
@@ -99,7 +101,7 @@ namespace JRA_VAN_PROTO
             // 
             // txtFromtime
             // 
-            this.txtFromtime.Location = new System.Drawing.Point(100, 133);
+            this.txtFromtime.Location = new System.Drawing.Point(100, 142);
             this.txtFromtime.Name = "txtFromtime";
             this.txtFromtime.Size = new System.Drawing.Size(123, 23);
             this.txtFromtime.TabIndex = 6;
@@ -107,7 +109,7 @@ namespace JRA_VAN_PROTO
             // lblFromtime
             // 
             this.lblFromtime.AutoSize = true;
-            this.lblFromtime.Location = new System.Drawing.Point(12, 141);
+            this.lblFromtime.Location = new System.Drawing.Point(12, 150);
             this.lblFromtime.Name = "lblFromtime";
             this.lblFromtime.Size = new System.Drawing.Size(67, 15);
             this.lblFromtime.TabIndex = 7;
@@ -116,7 +118,7 @@ namespace JRA_VAN_PROTO
             // cmbHandler
             // 
             this.cmbHandler.FormattingEnabled = true;
-            this.cmbHandler.Location = new System.Drawing.Point(100, 104);
+            this.cmbHandler.Location = new System.Drawing.Point(100, 113);
             this.cmbHandler.Name = "cmbHandler";
             this.cmbHandler.Size = new System.Drawing.Size(333, 23);
             this.cmbHandler.TabIndex = 8;
@@ -124,7 +126,7 @@ namespace JRA_VAN_PROTO
             // lblHander
             // 
             this.lblHander.AutoSize = true;
-            this.lblHander.Location = new System.Drawing.Point(13, 112);
+            this.lblHander.Location = new System.Drawing.Point(13, 121);
             this.lblHander.Name = "lblHander";
             this.lblHander.Size = new System.Drawing.Size(54, 15);
             this.lblHander.TabIndex = 9;
@@ -132,7 +134,7 @@ namespace JRA_VAN_PROTO
             // 
             // txtParam
             // 
-            this.txtParam.Location = new System.Drawing.Point(100, 163);
+            this.txtParam.Location = new System.Drawing.Point(100, 172);
             this.txtParam.Name = "txtParam";
             this.txtParam.Size = new System.Drawing.Size(333, 23);
             this.txtParam.TabIndex = 10;
@@ -140,17 +142,28 @@ namespace JRA_VAN_PROTO
             // lblParam
             // 
             this.lblParam.AutoSize = true;
-            this.lblParam.Location = new System.Drawing.Point(13, 171);
+            this.lblParam.Location = new System.Drawing.Point(13, 180);
             this.lblParam.Name = "lblParam";
             this.lblParam.Size = new System.Drawing.Size(50, 15);
             this.lblParam.TabIndex = 11;
             this.lblParam.Text = "パラメータ";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnGetData);
+            this.groupBox1.Location = new System.Drawing.Point(12, 36);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(439, 193);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "データ取得";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
             // frmDataGet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(477, 282);
             this.Controls.Add(this.lblParam);
             this.Controls.Add(this.txtParam);
             this.Controls.Add(this.lblHander);
@@ -161,11 +174,12 @@ namespace JRA_VAN_PROTO
             this.Controls.Add(this.lblOption);
             this.Controls.Add(this.cmbOption);
             this.Controls.Add(this.cmbDataSpec);
-            this.Controls.Add(this.btnGetData);
             this.Controls.Add(this.btnSettings);
+            this.Controls.Add(this.groupBox1);
             this.Name = "frmDataGet";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -185,6 +199,7 @@ namespace JRA_VAN_PROTO
         private System.Windows.Forms.Label lblHander;
         private System.Windows.Forms.TextBox txtParam;
         private System.Windows.Forms.Label lblParam;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

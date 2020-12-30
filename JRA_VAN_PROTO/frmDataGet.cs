@@ -173,5 +173,10 @@ namespace JRA_VAN_PROTO
             }
 
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

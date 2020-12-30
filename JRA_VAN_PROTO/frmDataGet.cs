@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxJVDTLabLib;
+using JRA_VAN_PROTO.Service;
 
 namespace JRA_VAN_PROTO
 {
@@ -41,6 +42,11 @@ namespace JRA_VAN_PROTO
             this.txtParam.Text = @"c:\work\jravan\out.txt";
 
             UpdataDataspecSelection();
+
+            this.txtHost.Text = "192.168.0.24";
+            this.txtDatabase.Text = "jra";
+            this.txtUser.Text = "jra";
+            this.txtDbFilename.Text = @"c:\work\jravan\out.txt";
         }
 
 
@@ -199,6 +205,18 @@ namespace JRA_VAN_PROTO
                 var dataSpecCode = ((Parameter)lstDataspec.Items[i]).Code;
                 lstDataspec.SetSelected(i, (dataSpecs.Contains(dataSpecCode)));
             }
+        }
+
+        private void btnDbInsert_Click(object sender, EventArgs e)
+        {
+            var dbService = new DbService();
+            dbService.Load(txtHost.Text, txtDatabase.Text, txtUser.Text, txtPassword.Text, txtDbFilename.Text);
+        }
+
+        private void btnCreateTable_Click(object sender, EventArgs e)
+        {
+            var dbService = new DbService();
+            dbService.CreateTable(txtHost.Text, txtDatabase.Text, txtUser.Text, txtPassword.Text);
         }
     }
 }

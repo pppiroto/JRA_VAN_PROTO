@@ -33,7 +33,7 @@ namespace JRA_VAN_PROTO.Handler
         public override RecordHandler Open()
         {
             base.Open();
-            this.writer = new StreamWriter(Path);
+            this.writer = new StreamWriter(Path, true);
             return this;
         }
 

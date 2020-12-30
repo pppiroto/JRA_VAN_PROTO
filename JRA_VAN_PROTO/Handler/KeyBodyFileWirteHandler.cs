@@ -91,13 +91,13 @@ namespace JRA_VAN_PROTO.Handler
 
                 case "O1":
                     o1.SetDataB(ref record);
-                    key = $"{o1.id.Year}{o1.id.MonthDay}{o1.id.JyoCD}{o1.id.Kaiji}{o1.id.Nichiji}{o1.id.RaceNum}{o1.HappyoTime}";
+                    key = $"{o1.id.Year}{o1.id.MonthDay}{o1.id.JyoCD}{o1.id.Kaiji}{o1.id.Nichiji}{o1.id.RaceNum}{o1.HappyoTime.Month}{o1.HappyoTime.Day}{o1.HappyoTime.Hour}{o1.HappyoTime.Minute}";
                     head = o1.head;
                     break;
 
                 case "O2":
                     o2.SetDataB(ref record);
-                    key = $"{o2.id.Year}{o2.id.MonthDay}{o2.id.JyoCD}{o2.id.Kaiji}{o2.id.Nichiji}{o2.id.RaceNum}{o2.HappyoTime}";
+                    key = $"{o2.id.Year}{o2.id.MonthDay}{o2.id.JyoCD}{o2.id.Kaiji}{o2.id.Nichiji}{o2.id.RaceNum}{o2.HappyoTime.Month}{o2.HappyoTime.Day}{o2.HappyoTime.Hour}{o2.HappyoTime.Minute}";
                     head = o2.head;
                     break;
 
